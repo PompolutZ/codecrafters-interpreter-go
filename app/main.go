@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -21,8 +22,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Uncomment this block to pass the first stage
-	
 	filename := os.Args[2]
 	fileContents, err := os.ReadFile(filename)
 	if err != nil {
@@ -31,8 +30,40 @@ func main() {
 	}
 	
 	if len(fileContents) > 0 {
-		panic("Scanner not implemented")
+		runFileContents(fileContents)
 	} else {
 		fmt.Println("EOF  null") // Placeholder, remove this line when implementing the scanner
 	}
+}
+
+func runFileContents(fileContents []byte) {
+	source := string(fileContents)
+	lines := strings.Split(source, "\n")
+	tokens := make([]Token, 0)
+	for i, line := range lines {
+		processLine(line, i+1, tokens)
+	}
+
+	fmt.Println("EOF  null") 
+}
+
+func processLine(source string, line int, tokens []Token) {
+	for _, char := range source {
+		if char == '(' {
+			token := NewToken(LEFT_PAREN, string(char), nil)
+			tokens = append(tokens, token)
+			fmt.Println(token.String())
+		} else if char == ')' {
+			token := NewToken(RIGHT_PAREN, string(char), nil)
+			tokens = append(tokens, token)
+			fmt.Println(token.String())
+		} else {
+			printScannerError(line, "Unexpected character", string(char))
+		}
+	}
+}
+
+func printScannerError(line int, where string, msg string) {
+	fmt.Fprintf(os.Stderr, "[line %d] Error: %s: %s\n", line, where, msg)
+	os.Exit(1)
 }
