@@ -70,7 +70,7 @@ func (s *Scanner) extractTokens() {
 			}
 		case '!':
 			if s.match('=') {
-				s.tokens = append(s.tokens, NewToken(BANG_EQUAL, "==", nil))
+				s.tokens = append(s.tokens, NewToken(BANG_EQUAL, "!=", nil))
 			} else {
 				s.tokens = append(s.tokens, NewToken(BANG, string(char), nil))
 			}
