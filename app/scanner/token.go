@@ -25,7 +25,27 @@ const (
 	GREATER_EQUAL
 )
 
-// String returns the string representation of the token type
+var lexemes = map[TokenType]string{
+	LEFT_PAREN:   "(",
+	RIGHT_PAREN:  ")",
+	LEFT_BRACE:   "{",
+	RIGHT_BRACE:  "}",
+	COMMA:        ",",
+	DOT:         ".",
+	MINUS:       "-",
+	PLUS:        "+",
+	SEMICOLON:   ";",
+	STAR:        "*",
+	EQUAL:       "=",
+	EQUAL_EQUAL: "==",
+	BANG:        "!",
+	BANG_EQUAL:  "!=",
+	LESS:        "<",
+	LESS_EQUAL:  "<=",
+	GREATER:     ">",
+	GREATER_EQUAL: ">=",
+}
+
 func (t TokenType) String() string {
 	return [...]string{
 		"LEFT_PAREN",
@@ -51,24 +71,15 @@ func (t TokenType) String() string {
 
 type Token struct {
 	Type TokenType
-	Lexeme string
-	Literal interface{}
 	Line int
 }
 
-func NewToken(tokenType TokenType, lexeme string, literal interface{}) Token {
+func NewToken(tokenType TokenType) Token {
 	return Token{
 		Type:   tokenType,
-		Lexeme: lexeme,
-		Literal:   literal,
 	}
 }
 
 func (t Token) String() string {
-	literal := t.Literal
-	if literal == nil {
-		literal = "null"
-	}
-
-	return fmt.Sprintf("%v %s %v", t.Type, t.Lexeme, literal)
+	return fmt.Sprintf("%v %s %v", t.Type, lexemes[t.Type], "null")
 }

@@ -43,48 +43,48 @@ func (s *Scanner) extractTokens() {
 		char := s.advance()
 		switch char {
 		case '(':
-			s.tokens = append(s.tokens, NewToken(LEFT_PAREN, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(LEFT_PAREN))
 		case ')':
-			s.tokens = append(s.tokens, NewToken(RIGHT_PAREN, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(RIGHT_PAREN))
 		case '{':
-			s.tokens = append(s.tokens, NewToken(LEFT_BRACE, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(LEFT_BRACE))
 		case '}':
-			s.tokens = append(s.tokens, NewToken(RIGHT_BRACE, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(RIGHT_BRACE))
 		case ',':
-			s.tokens = append(s.tokens, NewToken(COMMA, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(COMMA))
 		case '.':
-			s.tokens = append(s.tokens, NewToken(DOT, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(DOT))
 		case '-':
-			s.tokens = append(s.tokens, NewToken(MINUS, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(MINUS))
 		case '+':
-			s.tokens = append(s.tokens, NewToken(PLUS, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(PLUS))
 		case ';':
-			s.tokens = append(s.tokens, NewToken(SEMICOLON, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(SEMICOLON))
 		case '*':
-			s.tokens = append(s.tokens, NewToken(STAR, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(STAR))
 		case '=':
 			if s.match('=') {
-				s.tokens = append(s.tokens, NewToken(EQUAL_EQUAL, "==", nil))
+				s.tokens = append(s.tokens, NewToken(EQUAL_EQUAL))
 			} else {
-				s.tokens = append(s.tokens, NewToken(EQUAL, string(char), nil))
+				s.tokens = append(s.tokens, NewToken(EQUAL))
 			}
 		case '!':
 			if s.match('=') {
-				s.tokens = append(s.tokens, NewToken(BANG_EQUAL, "!=", nil))
+				s.tokens = append(s.tokens, NewToken(BANG_EQUAL))
 			} else {
-				s.tokens = append(s.tokens, NewToken(BANG, string(char), nil))
+				s.tokens = append(s.tokens, NewToken(BANG))
 			}
 		case '<':
 			if s.match('=') {
-				s.tokens = append(s.tokens, NewToken(LESS_EQUAL, "<=", nil))
+				s.tokens = append(s.tokens, NewToken(LESS_EQUAL))
 			} else {
-				s.tokens = append(s.tokens, NewToken(LESS, string(char), nil))
+				s.tokens = append(s.tokens, NewToken(LESS))
 			}
 		case '>':
 			if s.match('=') {
-				s.tokens = append(s.tokens, NewToken(GREATER_EQUAL, ">=", nil))
+				s.tokens = append(s.tokens, NewToken(GREATER_EQUAL))
 			} else {
-				s.tokens = append(s.tokens, NewToken(GREATER, string(char), nil))
+				s.tokens = append(s.tokens, NewToken(GREATER))
 			}
 
 		default:
