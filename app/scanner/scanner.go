@@ -1,4 +1,4 @@
-package main
+package scanner
 
 import (
 	"fmt"
@@ -6,14 +6,24 @@ import (
 	"strings"
 )
 
-func scanFileContents(fileContents []byte) {
-	source := string(fileContents)
-	lines := strings.Split(source, "\n")
+type Scanner struct {
+	hasErrors bool
+	source string 
+}
+
+func NewScanner(source string) *Scanner {
+	return &Scanner{
+		source: source,
+		hasErrors: false,
+	}
+}
+
+func (s *Scanner) Scan() {
+	lines := strings.Split(s.source, "\n")
 	tokens := make([]Token, 0)
-	lineHadError := false
 	
 	for i, line := range lines {
-		tokens, lineHadError = processLine(line, i+1, tokens)
+		tokens = s.processLine(line, i+1, tokens)
 	}
 
 	for _, token := range tokens {
@@ -22,13 +32,12 @@ func scanFileContents(fileContents []byte) {
 
 	fmt.Println("EOF  null")
 	
-	if lineHadError {
+	if s.hasErrors {
 		os.Exit(65)
 	}
 }
 
-func processLine(source string, line int, tokens []Token) ([]Token, bool) {
-	hadError := false
+func (s *Scanner) processLine(source string, line int, tokens []Token) []Token {
 	for _, char := range source {
 		switch char {
 		case '(':
@@ -53,11 +62,11 @@ func processLine(source string, line int, tokens []Token) ([]Token, bool) {
 			tokens = append(tokens, NewToken(STAR, string(char), nil))
 		default:
 			printScannerError(line, "Unexpected character", string(char))
-			hadError = true
+			s.hasErrors = true
 		}
 	}
 
-	return tokens, hadError
+	return tokens
 }
 
 func printScannerError(line int, where string, msg string) {

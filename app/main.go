@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/codecrafters-io/interpreter-starter-go/app/scanner"
 )
 
 func main() {
@@ -25,6 +27,7 @@ func main() {
 		os.Exit(1)
 	}
 	
-	scanFileContents(fileContents)
+	scanner := scanner.NewScanner(string(fileContents))
+	scanner.Scan()
 }
 
