@@ -41,26 +41,33 @@ func runFileContents(fileContents []byte) {
 	lines := strings.Split(source, "\n")
 	tokens := make([]Token, 0)
 	for i, line := range lines {
-		processLine(line, i+1, tokens)
+		tokens = processLine(line, i+1, tokens)
+	}
+
+	for _, token := range tokens {
+		fmt.Println(token)
 	}
 
 	fmt.Println("EOF  null") 
 }
 
-func processLine(source string, line int, tokens []Token) {
+func processLine(source string, line int, tokens []Token) []Token {
 	for _, char := range source {
-		if char == '(' {
-			token := NewToken(LEFT_PAREN, string(char), nil)
-			tokens = append(tokens, token)
-			fmt.Println(token.String())
-		} else if char == ')' {
-			token := NewToken(RIGHT_PAREN, string(char), nil)
-			tokens = append(tokens, token)
-			fmt.Println(token.String())
-		} else {
+		switch char {
+		case '(':
+			tokens = append(tokens, NewToken(LEFT_PAREN, string(char), nil))
+		case ')':
+			tokens = append(tokens, NewToken(RIGHT_PAREN, string(char), nil))
+		case '{':
+			tokens = append(tokens, NewToken(LEFT_BRACE, string(char), nil))
+		case '}':
+			tokens = append(tokens, NewToken(RIGHT_BRACE, string(char), nil))
+		default:
 			printScannerError(line, "Unexpected character", string(char))
 		}
 	}
+
+	return tokens
 }
 
 func printScannerError(line int, where string, msg string) {

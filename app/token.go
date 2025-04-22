@@ -7,6 +7,8 @@ type TokenType int
 const (
 	LEFT_PAREN TokenType = iota
 	RIGHT_PAREN
+	LEFT_BRACE
+	RIGHT_BRACE
 )
 
 // String returns the string representation of the token type
@@ -14,6 +16,8 @@ func (t TokenType) String() string {
 	return [...]string{
 		"LEFT_PAREN",
 		"RIGHT_PAREN",
+		"LEFT_BRACE",
+		"RIGHT_BRACE",
 	}[t]
 }
 
