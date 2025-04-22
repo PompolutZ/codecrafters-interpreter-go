@@ -40,18 +40,25 @@ func runFileContents(fileContents []byte) {
 	source := string(fileContents)
 	lines := strings.Split(source, "\n")
 	tokens := make([]Token, 0)
+	lineHadError := false
+	
 	for i, line := range lines {
-		tokens = processLine(line, i+1, tokens)
+		tokens, lineHadError = processLine(line, i+1, tokens)
 	}
 
 	for _, token := range tokens {
 		fmt.Println(token)
 	}
 
-	fmt.Println("EOF  null") 
+	fmt.Println("EOF  null")
+	
+	if lineHadError {
+		os.Exit(65)
+	}
 }
 
-func processLine(source string, line int, tokens []Token) []Token {
+func processLine(source string, line int, tokens []Token) ([]Token, bool) {
+	hadError := false
 	for _, char := range source {
 		switch char {
 		case '(':
@@ -76,13 +83,13 @@ func processLine(source string, line int, tokens []Token) []Token {
 			tokens = append(tokens, NewToken(STAR, string(char), nil))
 		default:
 			printScannerError(line, "Unexpected character", string(char))
+			hadError = true
 		}
 	}
 
-	return tokens
+	return tokens, hadError
 }
 
 func printScannerError(line int, where string, msg string) {
 	fmt.Fprintf(os.Stderr, "[line %d] Error: %s: %s\n", line, where, msg)
-	os.Exit(1)
 }
