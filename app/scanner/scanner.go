@@ -3,30 +3,31 @@ package scanner
 import (
 	"fmt"
 	"os"
-	"strings"
 )
 
 type Scanner struct {
 	hasErrors bool
 	source string 
+	tokens []Token
+	current int
+	line int
 }
 
 func NewScanner(source string) *Scanner {
 	return &Scanner{
 		source: source,
 		hasErrors: false,
+		tokens: make([]Token, 0),
+		current: 0,
+		line: 1,
 	}
 }
 
+// Scan processes the source code and extracts tokens
 func (s *Scanner) Scan() {
-	lines := strings.Split(s.source, "\n")
-	tokens := make([]Token, 0)
-	
-	for i, line := range lines {
-		tokens = s.processLine(line, i+1, tokens)
-	}
+	s.extractTokens()
 
-	for _, token := range tokens {
+	for _, token := range s.tokens {
 		fmt.Println(token)
 	}
 
@@ -37,36 +38,65 @@ func (s *Scanner) Scan() {
 	}
 }
 
-func (s *Scanner) processLine(source string, line int, tokens []Token) []Token {
-	for _, char := range source {
+func (s *Scanner) extractTokens() {
+	for !s.isAtEnd() {
+		char := s.advance()
 		switch char {
 		case '(':
-			tokens = append(tokens, NewToken(LEFT_PAREN, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(LEFT_PAREN, string(char), nil))
 		case ')':
-			tokens = append(tokens, NewToken(RIGHT_PAREN, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(RIGHT_PAREN, string(char), nil))
 		case '{':
-			tokens = append(tokens, NewToken(LEFT_BRACE, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(LEFT_BRACE, string(char), nil))
 		case '}':
-			tokens = append(tokens, NewToken(RIGHT_BRACE, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(RIGHT_BRACE, string(char), nil))
 		case ',':
-			tokens = append(tokens, NewToken(COMMA, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(COMMA, string(char), nil))
 		case '.':
-			tokens = append(tokens, NewToken(DOT, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(DOT, string(char), nil))
 		case '-':
-			tokens = append(tokens, NewToken(MINUS, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(MINUS, string(char), nil))
 		case '+':
-			tokens = append(tokens, NewToken(PLUS, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(PLUS, string(char), nil))
 		case ';':
-			tokens = append(tokens, NewToken(SEMICOLON, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(SEMICOLON, string(char), nil))
 		case '*':
-			tokens = append(tokens, NewToken(STAR, string(char), nil))
+			s.tokens = append(s.tokens, NewToken(STAR, string(char), nil))
+		case '=':
+			if s.match('=') {
+				s.tokens = append(s.tokens, NewToken(EQUAL_EQUAL, "==", nil))
+			} else {
+				s.tokens = append(s.tokens, NewToken(EQUAL, string(char), nil))
+			}
+
 		default:
-			printScannerError(line, "Unexpected character", string(char))
+			printScannerError(s.line, "Unexpected character", string(char))
 			s.hasErrors = true
 		}
 	}
+}
 
-	return tokens
+func (s *Scanner) advance() byte {
+	char := s.source[s.current]
+	s.current++
+	return char
+}
+
+func (s *Scanner) isAtEnd() bool {
+	return s.current >= len(s.source)
+}
+
+func (s *Scanner) match(expected byte) bool {
+	if s.isAtEnd() {
+		return false
+	}
+
+	if s.source[s.current] != expected {
+		return false
+	}
+
+	s.current++
+	return true
 }
 
 func printScannerError(line int, where string, msg string) {

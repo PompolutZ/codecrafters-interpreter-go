@@ -15,6 +15,8 @@ const (
 	PLUS
 	SEMICOLON
 	STAR
+	EQUAL
+	EQUAL_EQUAL
 )
 
 // String returns the string representation of the token type
@@ -30,6 +32,8 @@ func (t TokenType) String() string {
 		"PLUS",
 		"SEMICOLON",
 		"STAR",
+		"EQUAL",
+		"EQUAL_EQUAL",
 	}[t]
 }
 
