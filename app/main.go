@@ -62,6 +62,18 @@ func processLine(source string, line int, tokens []Token) []Token {
 			tokens = append(tokens, NewToken(LEFT_BRACE, string(char), nil))
 		case '}':
 			tokens = append(tokens, NewToken(RIGHT_BRACE, string(char), nil))
+		case ',':
+			tokens = append(tokens, NewToken(COMMA, string(char), nil))
+		case '.':
+			tokens = append(tokens, NewToken(DOT, string(char), nil))
+		case '-':
+			tokens = append(tokens, NewToken(MINUS, string(char), nil))
+		case '+':
+			tokens = append(tokens, NewToken(PLUS, string(char), nil))
+		case ';':
+			tokens = append(tokens, NewToken(SEMICOLON, string(char), nil))
+		case '*':
+			tokens = append(tokens, NewToken(STAR, string(char), nil))
 		default:
 			printScannerError(line, "Unexpected character", string(char))
 		}

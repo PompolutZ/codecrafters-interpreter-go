@@ -9,6 +9,12 @@ const (
 	RIGHT_PAREN
 	LEFT_BRACE
 	RIGHT_BRACE
+	COMMA
+	DOT
+	MINUS
+	PLUS
+	SEMICOLON
+	STAR
 )
 
 // String returns the string representation of the token type
@@ -18,6 +24,12 @@ func (t TokenType) String() string {
 		"RIGHT_PAREN",
 		"LEFT_BRACE",
 		"RIGHT_BRACE",
+		"COMMA",
+		"DOT",
+		"MINUS",
+		"PLUS",
+		"SEMICOLON",
+		"STAR",
 	}[t]
 }
 
