@@ -19,6 +19,10 @@ const (
 	EQUAL_EQUAL
 	BANG
 	BANG_EQUAL
+	LESS
+	LESS_EQUAL
+	GREATER
+	GREATER_EQUAL
 )
 
 // String returns the string representation of the token type
@@ -38,6 +42,10 @@ func (t TokenType) String() string {
 		"EQUAL_EQUAL",
 		"BANG",
 		"BANG_EQUAL",
+		"LESS",
+		"LESS_EQUAL",
+		"GREATER",
+		"GREATER_EQUAL",
 	}[t]
 }
 

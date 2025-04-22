@@ -74,6 +74,18 @@ func (s *Scanner) extractTokens() {
 			} else {
 				s.tokens = append(s.tokens, NewToken(BANG, string(char), nil))
 			}
+		case '<':
+			if s.match('=') {
+				s.tokens = append(s.tokens, NewToken(LESS_EQUAL, "<=", nil))
+			} else {
+				s.tokens = append(s.tokens, NewToken(LESS, string(char), nil))
+			}
+		case '>':
+			if s.match('=') {
+				s.tokens = append(s.tokens, NewToken(GREATER_EQUAL, ">=", nil))
+			} else {
+				s.tokens = append(s.tokens, NewToken(GREATER, string(char), nil))
+			}
 
 		default:
 			printScannerError(s.line, "Unexpected character", string(char))
