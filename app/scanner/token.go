@@ -17,6 +17,8 @@ const (
 	STAR
 	EQUAL
 	EQUAL_EQUAL
+	BANG
+	BANG_EQUAL
 )
 
 // String returns the string representation of the token type
@@ -34,6 +36,8 @@ func (t TokenType) String() string {
 		"STAR",
 		"EQUAL",
 		"EQUAL_EQUAL",
+		"BANG",
+		"BANG_EQUAL",
 	}[t]
 }
 
